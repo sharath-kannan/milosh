@@ -722,7 +722,8 @@ export function cleanAndSortManifestList(manifests) {
       }
       freshManifest.name = fullManifest.name;
       freshManifest.selectedVariantName = fullManifest.selectedVariantName;
-      freshManifest.selectedVariant = freshManifest.variants[freshManifest.selectedVariantName];
+      const selectedVariantName = freshManifest.variants?.[fullManifest?.selectedVariantName];
+      if (selectedVariantName) freshManifest.selectedVariant = selectedVariantName;
       manifestObj[manifest.manifestPath] = freshManifest;
     } else {
       manifestObj[manifest.manifestPath] = manifest;
