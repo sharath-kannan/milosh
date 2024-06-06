@@ -875,7 +875,15 @@ async function checkForPageMods() {
   const promo = getMepEnablement('manifestnames', 'promo');
   const target = getMepEnablement('target');
   if (!personalization && !promo && !target && !mepParam && !mepHighlight && !mepButton) return;
-  if (target) loadMartech();
+  if (target) {
+    loadMartech();
+  } else if (personalization) {
+    loadIms()
+      .then(() => {
+        if (window.adobeIMS.isSignedInUser()) loadMartech();
+      })
+      .catch((e) => { console.log('Unable to load IMS:', e); });
+  }
 
   const { init } = await import('../features/personalization/personalization.js');
   await init({

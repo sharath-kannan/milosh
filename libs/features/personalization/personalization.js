@@ -838,7 +838,7 @@ export async function applyPers(manifests, config, postLCP = false) {
   config.mep.martech = `|${pznVariants.join('--')}|${pznManifests.join('--')}`;
 }
 
-const combineNonTargetSources = async (persEnabled, promoEnabled, mepParam) => {
+export const combineNonTargetSources = async (persEnabled, promoEnabled, mepParam) => {
   let manifests = [];
 
   if (persEnabled) {
