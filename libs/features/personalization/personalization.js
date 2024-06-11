@@ -822,6 +822,7 @@ export async function applyPers(manifests, postLCP = false) {
       const {
         mep: mepParam,
         mepHighlight,
+        mepButton,
       } = Object.fromEntries(PAGE_URL.searchParams);
       config.mep = {
         handleFragmentCommand,
