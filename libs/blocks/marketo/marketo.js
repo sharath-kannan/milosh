@@ -96,7 +96,7 @@ export const formSuccess = (formEl, formData) => {
     return false;
   }
 
-  if (formData[SUCCESS_TYPE] === 'section') {
+  if (formData && formData[SUCCESS_TYPE] === 'section') {
     try {
       const section = formData[SUCCESS_SECTION].toLowerCase().replaceAll(' ', '-');
       const success = document.querySelector(`.section.${section}`);
@@ -104,7 +104,8 @@ export const formSuccess = (formEl, formData) => {
       success.scrollIntoView({ behavior: 'smooth' });
       setPreference(SUCCESS_TYPE, 'message');
     } catch (e) {
-      window.lana?.log('Error showing Marketo success section');
+      /* c8 ignore next 2 */
+      window.lana?.log('Error showing Marketo success section', { tags: 'errorType=warn,module=marketo' });
     }
     return false;
   }
@@ -148,7 +149,7 @@ export const loadMarketo = (el, formData) => {
     .catch(() => {
       /* c8 ignore next 2 */
       el.style.display = 'none';
-      window.lana?.log(`Error loading Marketo form for ${baseURL} ${formID}`);
+      window.lana?.log(`Error loading Marketo form for ${baseURL} ${formID}`, { tags: 'errorType=error,module=marketo' });
     });
 };
 
@@ -185,8 +186,13 @@ export default function init(el) {
     return;
   }
 
-  if (formData[SUCCESS_TYPE] === 'redirect') {
-    formData[SUCCESS_CONTENT] = decorateURL(formData[SUCCESS_CONTENT]);
+  if (!formData[SUCCESS_TYPE] || formData[SUCCESS_TYPE] === 'redirect') {
+    const destinationUrl = decorateURL(formData['form.success.content']);
+
+    if (destinationUrl) {
+      formData[SUCCESS_TYPE] = 'redirect';
+      formData[SUCCESS_CONTENT] = destinationUrl;
+    }
   }
 
   setPreferences(formData);
