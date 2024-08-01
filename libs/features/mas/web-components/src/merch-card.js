@@ -127,8 +127,10 @@ export class MerchCard extends LitElement {
             );
             await Promise.all(prices.map((price) => price.onceSettled()));
             this.adjustTitleWidth();
-            this.adjustMiniCompareBodySlots();
-            this.adjustMiniCompareFooterRows();
+            if (!this.isMobile) {
+              this.adjustMiniCompareBodySlots();
+              this.adjustMiniCompareFooterRows();
+            }
         });
     }
 
@@ -232,6 +234,10 @@ export class MerchCard extends LitElement {
             ...(this.footerSlot?.querySelectorAll('a[is="checkout-link"]') ??
                 []),
         ];
+    }
+
+    get isMobile() {
+        return window.matchMedia('(max-width: 767px)').matches
     }
 
     get isMobileOrTablet() {

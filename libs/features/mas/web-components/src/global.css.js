@@ -574,7 +574,7 @@ div[slot='bg-image'] img {
         --consonant-merch-card-catalog-width: 302px;
         --consonant-merch-card-plans-width: 302px;
         --consonant-merch-card-segment-width: 276px;
-        --consonant-merch-card-mini-compare-chart-width: 178px;
+        --consonant-merch-card-mini-compare-chart-width: 302px;
         --consonant-merch-card-mini-compare-chart-wide-width: 302px;
         --consonant-merch-card-special-offers-width: 302px;
         --consonant-merch-card-twp-width: 268px;
@@ -940,7 +940,7 @@ div[slot='bg-image'] img {
 
     .three-merch-cards.mini-compare-chart,
     .four-merch-cards.mini-compare-chart {
-        grid-template-columns: repeat(3, minmax(var(--consonant-merch-card-mini-compare-chart-width), var(--consonant-merch-card-mini-compare-chart-wide-width)));
+        grid-template-columns: repeat(2, minmax(var(--consonant-merch-card-mini-compare-chart-width), var(--consonant-merch-card-mini-compare-chart-wide-width)));
     }
 }
 
