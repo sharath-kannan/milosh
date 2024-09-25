@@ -1,5 +1,5 @@
 import { createIntersectionObserver, getConfig } from '../../utils/utils.js';
-import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay } from '../../utils/decorate.js';
+import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay, syncPausePlayIcon } from '../../utils/decorate.js';
 
 const ROOT_MARGIN = 1000;
 const handlePause = (event) => {
@@ -8,14 +8,12 @@ const handlePause = (event) => {
   const pauseIcon = event.target.closest('.pause-icon') || event.target.querySelector('.pause-icon');
   if (video.paused) {
     video.play();
-    pauseIcon.classList.remove('hidden');
-    playIcon.classList.add('hidden')
   } else {
     video.pause();
-    playIcon.classList.remove('hidden');
-    pauseIcon.classList.add('hidden');
   }
+  syncPausePlayIcon(video);
 }
+
 const loadVideo = (a) => {
   const { pathname, hash, dataset } = a;
   let videoPath = `.${pathname}`;

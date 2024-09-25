@@ -225,11 +225,24 @@ export function getVideoAttrs(hash, dataset) {
   return `${globalAttrs} controls`;
 }
 
+export const syncPausePlayIcon = (video) => {
+  const playIcon = video.nextElementSibling.querySelector('.play-icon');
+  const pauseIcon = video.nextElementSibling.querySelector('.pause-icon');
+  if (video.paused || video.ended) {
+    playIcon.classList.remove('hidden');
+    pauseIcon.classList.add('hidden');
+  } else {
+    pauseIcon.classList.remove('hidden');
+    playIcon.classList.add('hidden');
+  }
+}
+
 export function applyHoverPlay(video) {
   if (!video) return;
   if (video.hasAttribute('data-hoverplay') && !video.hasAttribute('data-mouseevent')) {
-    video.addEventListener('mouseenter', () => { video.play(); });
-    video.addEventListener('mouseleave', () => { video.pause(); });
+    video.addEventListener('mouseenter', () => { video.play(); syncPausePlayIcon(video); });
+    video.addEventListener('mouseleave', () => { video.pause(); syncPausePlayIcon(video); });
+    video.addEventListener('ended', () => { syncPausePlayIcon(video); });
     video.setAttribute('data-mouseevent', true);
   }
 }
@@ -266,7 +279,7 @@ export function getVideoIntersectionObserver() {
         const isHaveLoopAttr = video.getAttributeNames().includes('loop');
         const { playedOnce = false } = video.dataset;
         const isPlaying = video.currentTime > 0 && !video.paused && !video.ended
-        && video.readyState > video.HAVE_CURRENT_DATA;
+          && video.readyState > video.HAVE_CURRENT_DATA;
 
         if (intersectionRatio <= 0.8) {
           video.pause();
