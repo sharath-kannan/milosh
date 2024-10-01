@@ -1,6 +1,7 @@
 import { createIntersectionObserver, getConfig } from '../../utils/utils.js';
 import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay, syncPausePlayIcon } from '../../utils/decorate.js';
 
+const accessiblity = true;
 const ROOT_MARGIN = 1000;
 const handlePause = (event) => {
   const video = event.target.parentElement.parentElement.querySelector('video');
@@ -27,23 +28,27 @@ const loadVideo = (a) => {
   }
 
   const attrs = getVideoAttrs(hash, dataset);
-  const video = `<div><video ${attrs}>
-        <source src="${videoPath}" type="video/mp4" />
-      </video>
-      <div class='pause-play-wrapper' tabindex=0>
-        <img class='pause-icon' src='/drafts/sharathkannan/accessiblity/pause-video.svg'/>
-        <img class='play-icon hidden' src='/drafts/sharathkannan/accessiblity/play-video.svg'/>
-      </div>
-      <div>`;
-  // https://main--cc--adobecom.hlx.page/drafts/sharathkannan/accessiblity/play-video.svg
-  // https://main--cc--adobecom.hlx.page/drafts/sharathkannan/accessiblity/pause-video.svg
-  // https://main--cc--adobecom.hlx.page/cc-shared/assets/img/device-icons/devices-icon.svg
+  let video = '';
+  if (accessiblity) {
+    video = `<div class='video-container'><video ${attrs}>
+          <source src="${videoPath}" type="video/mp4" />
+        </video>
+        <div class='pause-play-wrapper' tabindex=0>
+          <img class='pause-icon ${a.textContent.includes('autoplay') ? '' : 'hidden'}' src='https://main--cc--adobecom.hlx.page/drafts/sharathkannan/accessiblity/pause.svg'/>
+          <img class='play-icon ${a.textContent.includes('autoplay') ? 'hidden' : ''}' src='https://main--cc--adobecom.hlx.page/drafts/sharathkannan/accessiblity/play.svg'/>
+        </div>
+        <div>`;
+  } else {
+    video = `<video ${attrs}>
+    <source src="${videoPath}" type="video/mp4" />
+  </video>`
+  }
   if (!a.parentNode) return;
   a.insertAdjacentHTML('afterend', video);
   const videoElem = document.body.querySelector(`source[src="${videoPath}"]`)?.parentElement;
-  const pausePlayWrapper = videoElem.parentElement.querySelector('.pause-play-wrapper');
-  pausePlayWrapper.addEventListener('click', handlePause);
-  pausePlayWrapper.addEventListener('keydown', handlePause)
+  const pausePlayWrapper = a.nextElementSibling.querySelector('.pause-play-wrapper');
+  pausePlayWrapper?.addEventListener('click', handlePause);
+  pausePlayWrapper?.addEventListener('keydown', handlePause)
 
   applyHoverPlay(videoElem);
   applyInViewPortPlay(videoElem);

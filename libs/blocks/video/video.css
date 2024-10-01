@@ -7,12 +7,40 @@ video {
   height: auto;
 }
 
-.pause-play-wrapper{
+
+.pause-play-wrapper img {
+  min-height:40px !important;
+}
+
+.video-container{
   display: flex;
-  float: right;
+  position: relative;
+}
+
+.image .pause-play-wrapper,.asset .pause-play-wrapper,.background .pause-play-wrapper{
+  width: 40px;
+  height: 40px;
+  display: flex;
+  position: absolute;
+  right: 2%;
+  bottom: 2%;
+  border-radius: 50%;
+  outline-color: var(--color-accent-focus-ring);
+  z-index: 2;
   cursor: pointer;
 }
 
 .hidden{
-  display: none;
+  display: none !important;
+}
+
+.marquee .background .video-container {
+  display: contents;
+}
+
+@media (min-width: 900px) {
+  .image:first-child .pause-play-wrapper {
+    left: 2%;
+  }
+
 }
