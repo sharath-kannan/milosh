@@ -17,7 +17,11 @@ video {
   position: relative;
 }
 
-.image .pause-play-wrapper,.asset .pause-play-wrapper,.background .pause-play-wrapper{
+.content .video-container {
+  display: contents;
+}
+
+.video-container .pause-play-wrapper {
   width: 40px;
   height: 40px;
   display: flex;
@@ -39,8 +43,8 @@ video {
 }
 
 @media (min-width: 900px) {
-  .image:first-child .pause-play-wrapper {
+  /* .image:first-child .pause-play-wrapper {
     left: 2%;
-  }
+  } */
 
 }
