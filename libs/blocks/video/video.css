@@ -49,8 +49,8 @@ video {
 }
 
 @media (min-width: 900px) {
-  /* .image:first-child .pause-play-wrapper {
-    left: 2%;
-  } */
+.image:first-child .pause-play-wrapper {
+  left: 2%;
+}
 
 }
