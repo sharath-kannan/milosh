@@ -34,8 +34,8 @@ const loadVideo = (a) => {
           <source src="${videoPath}" type="video/mp4" />
         </video>
         <div class='pause-play-wrapper' tabindex=0>
-          <img class='pause-icon ${a.textContent.includes('autoplay') ? '' : 'hidden'}' src='https://main--cc--adobecom.hlx.page/drafts/sharathkannan/accessiblity/pause.svg'/>
-          <img class='play-icon ${a.textContent.includes('autoplay') ? 'hidden' : ''}' src='https://main--cc--adobecom.hlx.page/drafts/sharathkannan/accessiblity/play.svg'/>
+          <img class='pause-icon ${a.textContent.includes('autoplay') ? '' : 'hidden'}' src='https://main--milo--adobecom.hlx.page/assets/icons/svgs/pause.svg'/>
+          <img class='play-icon ${a.textContent.includes('autoplay') ? 'hidden' : ''}' src='https://main--milo--adobecom.hlx.page/assets/icons/svgs/play.svg'/>
         </div>
         <div>`;
   } else {
