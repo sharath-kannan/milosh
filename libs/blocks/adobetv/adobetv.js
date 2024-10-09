@@ -1,5 +1,5 @@
 import { createIntersectionObserver } from '../../utils/utils.js';
-import { applyHoverPlay, getVideoAttrs, handlePause } from '../../utils/decorate.js';
+import { addAccessibilityControl, applyHoverPlay, getVideoAttrs, handlePause } from '../../utils/decorate.js';
 
 const ROOT_MARGIN = 1000;
 
@@ -9,16 +9,10 @@ const loadAdobeTv = (a) => {
     a.classList.add('hide');
     const { href, hash, dataset } = a;
     const attrs = getVideoAttrs(hash || 'autoplay', dataset);
-
-
-    const video = `<div class='video-container'><video ${attrs}>
+    let video = `<div class='video-container'><video ${attrs}>
     <source src="${href}" type="video/mp4" />
-  </video>
-  <div class='pause-play-wrapper' tabindex=0>
-    <img class='pause-icon ${attrs.includes('autoplay') ? '' : 'hidden'}' src='https://main--milo--adobecom.hlx.page/assets/icons/svgs/pause.svg'/>
-    <img class='play-icon ${attrs.includes('autoplay') ? 'hidden' : ''}' src='https://main--milo--adobecom.hlx.page/assets/icons/svgs/play.svg'/>
-  </div>
-  <div>`;
+  </video>`;
+    video = addAccessibilityControl(video, attrs);
     if (!a.parentNode) return;
     a.insertAdjacentHTML('afterend', video);
     const videoElem = document.body.querySelector(`source[src="${href}"]`)?.parentElement;

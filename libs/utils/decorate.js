@@ -237,6 +237,15 @@ const syncPausePlayIcon = (video) => {
   }
 }
 
+export const addAccessibilityControl = (videoString, videoAttributes) => {
+  return `<div class='video-container'>${videoString}
+  <a class='pause-play-wrapper' role='button' tabindex=0 alt='play/pause motion' aria-label='play/pause motion'>
+    <img class='pause-icon ${videoAttributes.includes('autoplay') ? '' : 'hidden'}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-pause.svg'/>
+    <img class='play-icon ${videoAttributes.includes('autoplay') ? 'hidden' : ''}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-play.svg'/>
+  </a>
+  <div>`;
+}
+
 export const handlePause = (event) => {
   if (event.code !== 'Enter' && event.code !== 'Space' && event.type !== 'click') {
     return;
