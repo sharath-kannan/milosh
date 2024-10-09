@@ -1,19 +1,8 @@
 import { createIntersectionObserver, getConfig } from '../../utils/utils.js';
-import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay, syncPausePlayIcon } from '../../utils/decorate.js';
+import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay, handlePause } from '../../utils/decorate.js';
 
 const accessiblity = true;
 const ROOT_MARGIN = 1000;
-const handlePause = (event) => {
-  const video = event.target.parentElement.parentElement.querySelector('video');
-  const playIcon = event.target.closest('.play-icon') || event.target.querySelector('.play-icon');
-  const pauseIcon = event.target.closest('.pause-icon') || event.target.querySelector('.pause-icon');
-  if (video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
-  syncPausePlayIcon(video);
-}
 
 const loadVideo = (a) => {
   const { pathname, hash, dataset } = a;
@@ -34,8 +23,8 @@ const loadVideo = (a) => {
           <source src="${videoPath}" type="video/mp4" />
         </video>
         <div class='pause-play-wrapper' tabindex=0>
-          <img class='pause-icon ${a.textContent.includes('autoplay') ? '' : 'hidden'}' src='https://main--milo--adobecom.hlx.page/assets/icons/svgs/pause.svg'/>
-          <img class='play-icon ${a.textContent.includes('autoplay') ? 'hidden' : ''}' src='https://main--milo--adobecom.hlx.page/assets/icons/svgs/play.svg'/>
+          <img class='pause-icon ${attrs.includes('autoplay') ? '' : 'hidden'}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-pause.svg'/>
+          <img class='play-icon ${attrs.includes('autoplay') ? 'hidden' : ''}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-play.svg'/>
         </div>
         <div>`;
   } else {

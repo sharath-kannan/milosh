@@ -225,16 +225,30 @@ export function getVideoAttrs(hash, dataset) {
   return `${globalAttrs} controls`;
 }
 
-export const syncPausePlayIcon = (video) => {
+const syncPausePlayIcon = (video) => {
   const playIcon = video.nextElementSibling.querySelector('.play-icon');
   const pauseIcon = video.nextElementSibling.querySelector('.pause-icon');
   if (video.paused || video.ended) {
-    playIcon.classList.remove('hidden');
-    pauseIcon.classList.add('hidden');
+    playIcon?.classList.remove('hidden');
+    pauseIcon?.classList.add('hidden');
   } else {
-    pauseIcon.classList.remove('hidden');
-    playIcon.classList.add('hidden');
+    pauseIcon?.classList.remove('hidden');
+    playIcon?.classList.add('hidden');
   }
+}
+
+export const handlePause = (event) => {
+  if (event.code !== 'Enter' && event.code !== 'Space' && event.type !== 'click') {
+    return;
+  }
+  event.preventDefault();
+  const video = event.target.parentElement.parentElement.querySelector('video');
+  if (video.paused) {
+    video.play();
+  } else {
+    video.pause();
+  }
+  syncPausePlayIcon(video);
 }
 
 export function applyHoverPlay(video) {
