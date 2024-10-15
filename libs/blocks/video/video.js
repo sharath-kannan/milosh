@@ -1,5 +1,5 @@
 import { createIntersectionObserver, getConfig } from '../../utils/utils.js';
-import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay, handlePause, addAccessibilityControl } from '../../utils/decorate.js';
+import { applyHoverPlay, getVideoAttrs, applyInViewPortPlay, handlePause, addAccessibilityControl, syncPausePlayIcon } from '../../utils/decorate.js';
 
 const accessiblity = true;
 const ROOT_MARGIN = 1000;
@@ -25,11 +25,13 @@ const loadVideo = (a) => {
   }
   if (!a.parentNode) return;
   a.insertAdjacentHTML('afterend', video);
-  const videoElem = document.body.querySelector(`source[src="${videoPath}"]`)?.parentElement;
+  const videoElem = a.parentElement.querySelector(`source[src="${videoPath}"]`)?.parentElement;
   const pausePlayWrapper = a.nextElementSibling.querySelector('.pause-play-wrapper');
   pausePlayWrapper?.addEventListener('click', handlePause);
-  pausePlayWrapper?.addEventListener('keydown', handlePause)
-
+  pausePlayWrapper?.addEventListener('keydown', handlePause);
+  if (attrs.includes('autoplay')) {
+    videoElem.addEventListener('ended', () => { syncPausePlayIcon(videoElem); });
+  }
   applyHoverPlay(videoElem);
   applyInViewPortPlay(videoElem);
   a.remove();

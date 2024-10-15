@@ -438,10 +438,6 @@ div[class*="-up"] .media .foreground > .media-row {
   .media.large.bio .avatar img {
     height: 120px;
   }
-
-  .hidden{
-    display: none !important;
-  }
 }
 
 /* In the delayed modal used for promotions */

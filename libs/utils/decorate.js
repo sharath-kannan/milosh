@@ -1,5 +1,6 @@
 import { createTag } from './utils.js';
 
+const accessibilityEnabled = true;
 export function decorateButtons(el, size) {
   const buttons = el.querySelectorAll('em a, strong a, p > a strong');
   if (buttons.length === 0) return;
@@ -225,9 +226,9 @@ export function getVideoAttrs(hash, dataset) {
   return `${globalAttrs} controls`;
 }
 
-const syncPausePlayIcon = (video) => {
-  const playIcon = video.nextElementSibling.querySelector('.play-icon');
-  const pauseIcon = video.nextElementSibling.querySelector('.pause-icon');
+export const syncPausePlayIcon = (video) => {
+  const playIcon = video.nextElementSibling?.querySelector('.play-icon');
+  const pauseIcon = video.nextElementSibling?.querySelector('.pause-icon');
   if (video.paused || video.ended) {
     playIcon?.classList.remove('hidden');
     pauseIcon?.classList.add('hidden');
@@ -238,21 +239,33 @@ const syncPausePlayIcon = (video) => {
 }
 
 export const addAccessibilityControl = (videoString, videoAttributes) => {
-  return `<div class='video-container'>${videoString}
+  if (accessibilityEnabled && !videoAttributes.includes('controls')) {
+    if (videoAttributes.includes('hoverplay')) {
+      return `<a class='pause-play-wrapper' tabindex=0>${videoString}
+    </a>`;
+    } else {
+      return `<div class='video-container'>${videoString}
   <a class='pause-play-wrapper' role='button' tabindex=0 alt='play/pause motion' aria-label='play/pause motion'>
-    <img class='pause-icon ${videoAttributes.includes('autoplay') ? '' : 'hidden'}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-pause.svg'/>
-    <img class='play-icon ${videoAttributes.includes('autoplay') ? 'hidden' : ''}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-play.svg'/>
+    <img class='accessibility-control pause-icon ${videoAttributes.includes('autoplay') ? '' : 'hidden'}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-pause.svg'/>
+    <img class='accessibility-control play-icon ${videoAttributes.includes('autoplay') ? 'hidden' : ''}' src='https://main--federal--adobecom.hlx.page/federal/assets/svgs/accessibility-play.svg'/>
   </a>
-  <div>`;
+  </div>`;
+    }
+  } else {
+    return videoString;
+  }
+
 }
 
 export const handlePause = (event) => {
-  if (event.code !== 'Enter' && event.code !== 'Space' && event.type !== 'click') {
+  if (event.code !== 'Enter' && event.code !== 'Space' && !['focus', 'click', 'blur'].includes(event.type)) {
     return;
   }
   event.preventDefault();
   const video = event.target.parentElement.parentElement.querySelector('video');
-  if (video.paused) {
+  if (event.type === 'blur') {
+    video.pause();
+  } else if (video.paused || video.ended || event.type === 'focus') {
     video.play();
   } else {
     video.pause();
@@ -262,11 +275,15 @@ export const handlePause = (event) => {
 
 export function applyHoverPlay(video) {
   if (!video) return;
-  if (video.hasAttribute('data-hoverplay') && !video.hasAttribute('data-mouseevent')) {
-    video.addEventListener('mouseenter', () => { video.play(); syncPausePlayIcon(video); });
-    video.addEventListener('mouseleave', () => { video.pause(); syncPausePlayIcon(video); });
-    video.addEventListener('ended', () => { syncPausePlayIcon(video); });
-    video.setAttribute('data-mouseevent', true);
+  if (video.hasAttribute('data-hoverplay')) {
+    video.parentElement.addEventListener('focus', handlePause);
+    video.parentElement.addEventListener('blur', handlePause);
+    if (!video.hasAttribute('data-mouseevent')) {
+      video.addEventListener('mouseenter', () => { video.play(); });
+      video.addEventListener('mouseleave', () => { video.pause(); });
+      video.addEventListener('ended', () => { syncPausePlayIcon(video); });
+      video.setAttribute('data-mouseevent', true);
+    }
   }
 }
 

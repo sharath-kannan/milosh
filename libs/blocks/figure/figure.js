@@ -1,4 +1,4 @@
-import { applyHoverPlay, getVideoAttrs } from '../../utils/decorate.js';
+import { addAccessibilityControl, applyHoverPlay, getVideoAttrs, handlePause } from '../../utils/decorate.js';
 
 function buildCaption(pEl) {
   const figCaptionEl = document.createElement('figcaption');
@@ -20,18 +20,22 @@ function decorateVideo(clone, figEl) {
   if (videoLink) {
     const { href, hash, dataset } = videoLink;
     const attrs = getVideoAttrs(hash, dataset);
-    const videoElem = `<video ${attrs}>
+    let videoElem = `<video ${attrs}>
       <source src="${href}" type="video/mp4" />
     </video>`;
-
+    videoElem = addAccessibilityControl(videoElem, attrs);
     videoLink.insertAdjacentHTML('afterend', videoElem);
     videoLink.remove();
     video = clone.querySelector('video');
   }
   if (video) {
+    const videoContainer = clone.querySelector('.video-container') || clone.querySelector('.pause-play-wrapper') || clone.querySelector('video');
     video.removeAttribute('data-mouseevent');
     applyHoverPlay(video);
-    figEl.prepend(video);
+    figEl.prepend(videoContainer);
+    const pausePlayWrapper = videoContainer.querySelector('.pause-play-wrapper') || videoContainer
+    pausePlayWrapper?.addEventListener('click', handlePause);
+    pausePlayWrapper?.addEventListener('keydown', handlePause)
   }
 }
 
@@ -68,7 +72,7 @@ export function buildFigure(blockEl) {
       const link = clone.querySelector('a');
       if (link) {
         const img = figEl.querySelector('picture') || figEl.querySelector('video');
-        if (img) {
+        if (img && !link.classList.contains('pause-play-wrapper')) {
           // wrap picture or video in A tag
           link.textContent = '';
           link.append(img);
