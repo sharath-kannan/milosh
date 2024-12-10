@@ -1,4 +1,4 @@
-import { applyHoverPlay, decorateAnchorVideo, applyAccessibilityEvents, decoratePausePlayWrapper, isVideoAccessible } from '../../utils/decorate.js';
+import { applyHoverPlay, decorateAnchorVideo } from '../../utils/decorate.js';
 import { createTag } from '../../utils/utils.js';
 
 function buildCaption(pEl) {
@@ -31,11 +31,7 @@ function decorateVideo(clone, figEl) {
       );
     }
     applyHoverPlay(videoTag);
-    if (!videoTag.controls && isVideoAccessible(anchorTag)) {
-      applyAccessibilityEvents(videoTag);
-      decoratePausePlayWrapper(videoTag, 'autoplay');
-    }
-    figEl.prepend(clone.querySelector('.video-container, .pause-play-wrapper, video'));
+    figEl.prepend(videoTag);
   }
 }
 
@@ -72,7 +68,7 @@ export function buildFigure(blockEl) {
       const link = clone.querySelector('a');
       if (link) {
         const img = figEl.querySelector('picture') || figEl.querySelector('video');
-        if (img && !link.classList.contains('pause-play-wrapper')) {
+        if (img) {
           // wrap picture or video in A tag
           link.textContent = '';
           link.append(img);

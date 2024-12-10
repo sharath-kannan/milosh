@@ -9,6 +9,7 @@ import {
 } from '../../utils/utils.js';
 
 import {
+  getFedsPlaceholderConfig,
   getExperienceName,
   getAnalyticsValue,
   loadDecorateMenu,
@@ -22,7 +23,7 @@ import {
   isDarkMode,
 } from '../global-navigation/utilities/utilities.js';
 
-import { getFederatedUrl, getFedsPlaceholderConfig } from '../../utils/federated.js';
+import { getFederatedUrl } from '../../utils/federated.js';
 
 import { replaceKey } from '../../features/placeholders.js';
 

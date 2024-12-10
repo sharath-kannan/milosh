@@ -1,5 +1,6 @@
 import {
   toFragment,
+  getFedsPlaceholderConfig,
   isDesktop,
   setCurtainState,
   trigger,
@@ -9,7 +10,6 @@ import {
 import { replaceKeyArray } from '../../../../features/placeholders.js';
 import { getConfig } from '../../../../utils/utils.js';
 import { debounce } from '../../../../utils/action.js';
-import { getFedsPlaceholderConfig } from '../../../../utils/federated.js';
 
 const CONFIG = {
   suggestions: {

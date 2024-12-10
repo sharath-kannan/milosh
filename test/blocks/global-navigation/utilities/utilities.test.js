@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import {
   fetchAndProcessPlainHtml,
   toFragment,
+  getFedsPlaceholderConfig,
   federatePictureSources,
   getAnalyticsValue,
   decorateCta,
@@ -17,7 +18,6 @@ import {
 import { setConfig, getConfig } from '../../../../libs/utils/utils.js';
 import { createFullGlobalNavigation, config } from '../test-utilities.js';
 import mepInBlock from '../mocks/mep-config.js';
-import { getFedsPlaceholderConfig } from '../../../../libs/utils/federated.js';
 
 const baseHost = 'https://main--federal--adobecom.aem.page';
 describe('global navigation utilities', () => {
