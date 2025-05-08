@@ -313,7 +313,7 @@ export class MerchCard extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         this.#service = getService();
-        this.#log = this.#service.Log.module(MERCH_CARD);
+        this.#log = this.#service?.Log?.module(MERCH_CARD);
         this.id ??=
             this.querySelector('aem-fragment')?.getAttribute('fragment');
         performance.mark(
